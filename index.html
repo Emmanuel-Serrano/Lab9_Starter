@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 9</title>
+
+  <style>
+    button {
+      margin: 3px;
+    }
+
+    button:hover {
+      cursor: pointer;
+    }
+
+    #first-num,
+    #second-num {
+      width: 60px;
+    }
+
+    output {
+      border: 1px solid gray;
+      display: block;
+      height: 18px;
+      margin-top: 5px;
+      padding: 5px;
+      width: 240px;
+    }
+
+    main {
+      width: 800px;
+    }
+
+    #error-btns {
+      column-gap: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      row-gap: 5px;
+    }
+
+    #error-btns>* {
+      padding: 8px 2px;
+      width: 122px;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <form>
+      <fieldset>
+        <legend>Error Calculator</legend>
+        <input name="first-num" id="first-num" />
+        <select name="operator" id="operator">
+          <option>+</option>
+          <option>-</option>
+          <option>*</option>
+          <option>/</option>
+        </select>
+        <input name="second-num" id="second-num" />
+        <button id="calculate">Calculate</button>
+        <br />
+        <output></output>
+      </fieldset>
+    </form>
+
+    <section id="error-btns">
+      <button>Console Log</button>
+      <button>Console Error</button>
+      <button>Console Count</button>
+      <button>Console Warn</button>
+      <button>Console Assert</button>
+      <button>Console Clear</button>
+      <button>Console Dir</button>
+      <button>Console dirxml</button>
+      <button>Console Group Start</button>
+      <button>Console Group End</button>
+      <button>Console Table</button>
+      <button>Start Timer</button>
+      <button>End Timer</button>
+      <button>Console Trace</button>
+      <button>Trigger a Global Error</button>
+    </section>
+  </main>
+
+  <script>
+
+    class CustomError extends Error{
+      constructor(message, cause){
+        console.log("UMMM uh ohh");
+
+        super(message);
+        this.message = "CustomErrorHandling - " + message;
+      }
+    }
+
+    
+    let form = document.querySelector('form');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      try{
+      let output = document.querySelector('output');
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      let operator = document.querySelector('#operator').value;
+      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err){
+        if (err instanceof SyntaxError) {
+          throw new CustomError(err);
+        } else {
+          throw err;
+        }
+      }
+      });
+
+    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+
+    // Start your code here
+    // You may move this JS to another file if you wish
+    let log_button = document.getElementById("error-btns").querySelector('button');
+    log_button.addEventListener('click', function(){
+      console.log("clicked logged button");
+    });
+
+    let error_button = document.getElementById("error-btns").querySelectorAll('button')[1]
+    error_button.addEventListener('click', function () {
+      console.error("clicked error button");
+    });
+
+    let count_button = document.getElementById("error-btns").querySelectorAll('button')[2]
+    count_button.addEventListener('click', function () {
+      console.count("clicked count button this many times: ");
+    });
+
+    let warn_button = document.getElementById("error-btns").querySelectorAll('button')[3]
+    warn_button.addEventListener('click', function () {
+      console.warn("clicked warn button");
+    });
+
+    let assert_button = document.getElementById("error-btns").querySelectorAll('button')[4]
+    assert_button.addEventListener('click', function () {
+      let x = 1;
+      let y = 1;
+      console.assert(x + y == 3, "We clicked assert");
+    });
+
+    let clear_button = document.getElementById("error-btns").querySelectorAll('button')[5]
+    clear_button.addEventListener('click', function () {
+      console.clear();
+    });
+
+    let dir_button = document.getElementById("error-btns").querySelectorAll('button')[6]
+    dir_button.addEventListener('click', function () {
+      console.dir(["We","clicked","dir","button"]);
+    });
+    
+    let dirxml_button = document.getElementById("error-btns").querySelectorAll('button')[7]
+    dirxml_button.addEventListener('click', function () {
+      console.dirxml(["We", "clicked", "dirxml", "button"]);
+    });
+
+    let group_start_button = document.getElementById("error-btns").querySelectorAll('button')[8]
+    group_start_button.addEventListener('click', function () {
+      console.group();
+
+    });
+
+    let group_end_button = document.getElementById("error-btns").querySelectorAll('button')[9]
+    group_end_button.addEventListener('click', function () {
+      console.groupEnd();
+    });
+
+    let table_button = document.getElementById("error-btns").querySelectorAll('button')[10]
+    table_button.addEventListener('click', function () {
+      console.table(["we","clicked","table","button"]);
+    });
+
+    let timer_start_button = document.getElementById("error-btns").querySelectorAll('button')[11]
+    timer_start_button.addEventListener('click', function () {
+      console.time("Timer Button");
+    });
+
+    let timer_end_button = document.getElementById("error-btns").querySelectorAll('button')[12]
+    timer_end_button.addEventListener('click', function () {
+      console.timeEnd("Timer Button");
+    });
+
+    let trace_button = document.getElementById("error-btns").querySelectorAll('button')[13]
+    trace_button.addEventListener('click', function () {
+      function clicked() {
+        function trace_button() {
+            console.trace();
+        }
+        trace_button();
+      }
+      clicked();
+    });
+    
+    let global_error_button = document.getElementById("error-btns").querySelectorAll('button')[14]
+    global_error_button.addEventListener('click', function () {
+      try{
+        let bob = bobb - 1;  
+      }
+      catch(err){
+        throw new CustomError(err); 
+      }
+    });
+  </script>
+</body>
+
+</html>
